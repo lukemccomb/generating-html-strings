@@ -1,17 +1,13 @@
 class HTMLGenerator
 
-  def initialize( text = "" )
-    # if text != nil
-    #   text.sub("CONTENT", " ").split(" ")
-    #   @first_tag = text[0]
-    #   @second_tag = text[1]
-    # else
-    #
-    # end
+  def initialize(wrapper = "CONTENT")
+    @html_layout = wrapper
   end
 
-  def section(text)
-    @section = "<section>#{text}</section>"
+  def section(content)
+    return_text = "<section>#{content}</section>"
+
+    @html_layout.gsub(/CONTENT/, return_text)
   end
 
   def unordered_list(list_items)
@@ -20,16 +16,20 @@ class HTMLGenerator
       u_l << "<li>#{list_item}</li>"
     end
     u_l << "</ul>"
+
+    return u_l if @html_layout == ''
+
+    @html_layout.gsub(/CONTENT/, u_l)
   end
 
   def button(x, hsh = {})
-    if hsh[:class] == nil
-      "<button>#{x}</button>"
-    else
-      "<button class='#{hsh[:class]}'>#{x}</button>"
-    end
+    button_html = if hsh[:class] == nil
+                    "<button>#{x}</button>"
+                  else
+                    "<button class='#{hsh[:class]}'>#{x}</button>"
+                  end
+    @html_layout.gsub(/CONTENT/, button_html)
   end
-
 
 
 end
